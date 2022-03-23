@@ -29,21 +29,26 @@ fn main() {
     //Initiate a session
     let session = &bundle.session;
 
+    //Alternative to saved_model_cli. This will list all signatures in the console when run
+    // let sigs = bundle.meta_graph_def().signatures();
+    // println!("{:?}", sigs);
+    
+
     //Retrieve the train functions signature
     let signature_train = bundle.meta_graph_def().get_signature("train").unwrap();
 
-    //
+    //Input information
     let input_info_train = signature_train.get_input(train_input_parameter_input_name).unwrap();
     let target_info_train = signature_train.get_input(train_input_parameter_target_name).unwrap();
 
-    //
+    //Output information
     let output_info_train = signature_train.get_output(train_output_parameter_name).unwrap();
 
-    //
+    //Input operation
     let input_op_train = graph.operation_by_name_required(&input_info_train.name().name).unwrap();
     let target_op_train = graph.operation_by_name_required(&target_info_train.name().name).unwrap();
 
-    //
+    //Output operation
     let output_op_train = graph.operation_by_name_required(&output_info_train.name().name).unwrap();
 
     //The values will be fed to and retrieved from the model with this
